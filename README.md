@@ -64,8 +64,6 @@
 
 ## About The Project
 
-[![Country Info Fetcher](img/Screenshot%202024-06-20%20at%2014.21.36.png)](img/Screenshot%202024-06-20%20at%2014.21.36.png)
-
 This is a basic JavaScript application that retrieves and shows data for several nations via the REST nations API. It provides information about the country's flag, name, territory, population, languages, and currencies.
 
 This project offers the following benefits: 
