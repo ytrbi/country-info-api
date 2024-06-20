@@ -1,9 +1,35 @@
 'use strict';
 
-const btn = document.querySelector('.btn-country');
+const bg = document.querySelector('.bg');
+const loadText = document.querySelector('.loading');
 const countriesContainer = document.querySelector('.countries');
 
-///////////////////////////////////////
+// Loading effect variables
+let load = 0;
+let int = setInterval(blurring, 30);
+
+// Function to update loading effect and blur background
+function blurring() {
+    load++;
+    if (load > 99) {
+        clearInterval(int);
+        setTimeout(() => {
+            loadText.style.display = 'none'; 
+            countriesContainer.style.opacity = 1; 
+            revealCountries();
+        }, 500); 
+    }
+    loadText.textContent = `${load}%`;
+    loadText.style.opacity = scale(load, 0, 100, 1, 0);
+    bg.style.filter = `blur(${scale(load, 0, 100, 30, 0)}px)`;
+}
+
+// Function to scale values
+function scale(num, in_min, in_max, out_min, out_max) {
+    return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+// Function to fetch and display country data
 const getCountryData = function (country) {
     const request = new XMLHttpRequest();
     request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
@@ -28,7 +54,7 @@ const getCountryData = function (country) {
             `;
 
             countriesContainer.insertAdjacentHTML('beforeend', html);
-            countriesContainer.style.opacity = 1;
+            revealCountries(); // Call function to reveal countries after they are added
         } else {
             console.error(`Error loading country data: ${this.status} - ${this.statusText}`);
         }
@@ -38,6 +64,17 @@ const getCountryData = function (country) {
         console.error('Network error occurred');
     });
 };
+
+// Function to reveal countries after they are all loaded
+function revealCountries() {
+    const countries = document.querySelectorAll('.country');
+    countries.forEach((country, index) => {
+        setTimeout(() => {
+            country.style.opacity = 1;
+        }, index * 100);
+    });
+}
+
 
 getCountryData('Saudi%20Arabia');
 getCountryData('usa');
